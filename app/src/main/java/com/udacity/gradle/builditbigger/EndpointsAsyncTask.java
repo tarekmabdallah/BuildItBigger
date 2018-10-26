@@ -10,8 +10,9 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
+    private static final String APP_NAME = "JokesApp";
     private static final String ROOT_URL = "http://10.0.2.2:8080/_ah/api/";
     // app url "https://jokesapp-219517.appspot.com"
     // --- for  physical device  http://192.168.1.2:8080/_ah/api/
@@ -27,7 +28,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
-                    }).setApplicationName("JokesApp");
+                    }).setApplicationName(APP_NAME);
            myApiService = builder.build();
         }
 

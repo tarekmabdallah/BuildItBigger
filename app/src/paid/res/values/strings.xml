@@ -1,0 +1,4 @@
+<resources>
+    <string name="instructions">Welcome in paid version\nPress the button for a delicious joke!</string>
+    <string name="button_text">Tell a free Joke</string>
+</resources>

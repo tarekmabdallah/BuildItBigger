@@ -3,7 +3,9 @@
     package="com.gmail.tarekmabdallah91.displayjokesandroidlib2">
 
     <application>
-        <activity android:name=".DisplayJokesActivity"></activity>
+        <activity android:name=".DisplayJokesActivity">
+
+        </activity>
     </application>
 
 </manifest>

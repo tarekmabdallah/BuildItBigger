@@ -9,13 +9,17 @@
         android:id="@+id/instructions_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textSize="@dimen/instruction_text_size"
         android:text="@string/instructions" />
 
     <Button
+        android:id="@+id/tell_joke_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/instructions_text_view"
-        android:onClick="tellJoke"
+        android:layout_centerInParent="true"
         android:text="@string/button_text" />
 
     <com.google.android.gms.ads.AdView
