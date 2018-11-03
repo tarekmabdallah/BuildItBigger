@@ -1,25 +1,24 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.gmail.tarekmabdallah91.displayjokesandroidlib2.DisplayJokesActivity;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
-import java.util.concurrent.ExecutionException;
-
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.gmail.tarekmabdallah91.displayjokesandroidlib2.DisplayJokesActivity.JOKE_KEYWORD;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     String backMsg;
     @BindString(R.string.interstitial_not_loaded_msg)
     String interstitialNotLoadedMsg;
-
     @BindView(R.id.adView)
     AdView mAdView;
+    @BindView(R.id.progress_bar)
+    ProgressBar bar;
 
     private InterstitialAd interstitialAd;
 
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setBannerAd();
         setInterstitialAd();
     }
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
-                Toast.makeText(getBaseContext(), backMsg , Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), backMsg, LENGTH_LONG).show();
             }
         });
     }
@@ -74,26 +73,19 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tell_joke_btn)
     void onClickTellJokeBtn (){
+        bar.setVisibility(VISIBLE);
+        new EndpointsAsyncTask().execute(this);
         if (interstitialAd.isLoaded()) {
             interstitialAd.show(); // shown after the user return back to MainActivity
-        } else {
-            Toast.makeText(getBaseContext(), interstitialNotLoadedMsg , Toast.LENGTH_LONG).show();
-        }
-
-        try {
-            String joke = new EndpointsAsyncTask().execute().get();
-            sendJokeToDisplayJokesLib(joke);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } else { // if the ads not loaded ask the user to try again after some seconds
+            interstitialAd.loadAd(new AdRequest.Builder().build());
+            Toast.makeText(getBaseContext(), interstitialNotLoadedMsg, LENGTH_LONG).show();
         }
     }
 
-    private void sendJokeToDisplayJokesLib(String joke){
-        Intent displayJoke = new Intent(this, DisplayJokesActivity.class);
-        displayJoke.putExtra(JOKE_KEYWORD, joke);
-        startActivity(displayJoke);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bar.setVisibility(GONE);
     }
-
 }

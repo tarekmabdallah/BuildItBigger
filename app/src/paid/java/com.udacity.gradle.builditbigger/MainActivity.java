@@ -1,19 +1,20 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 
-import com.gmail.tarekmabdallah91.displayjokesandroidlib2.DisplayJokesActivity;
-
-import java.util.concurrent.ExecutionException;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.gmail.tarekmabdallah91.displayjokesandroidlib2.DisplayJokesActivity.JOKE_KEYWORD;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.progress_bar)
+    ProgressBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,20 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tell_joke_btn)
     void onClickTellJokeBtn() {
-        try {
-            String joke = new EndpointsAsyncTask().execute().get();
-            sendJokeToDisplayJokesLib(joke);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        bar.setVisibility(VISIBLE);
+        new EndpointsAsyncTask().execute(this);
     }
 
-    private void sendJokeToDisplayJokesLib(String joke) {
-        Intent displayJoke = new Intent(this, DisplayJokesActivity.class);
-        displayJoke.putExtra(JOKE_KEYWORD, joke);
-        startActivity(displayJoke);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bar.setVisibility(GONE);
     }
 
 }

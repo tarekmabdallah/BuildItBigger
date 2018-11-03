@@ -4,5 +4,5 @@
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="app_id_for_test_interstitial_ad">"ca-app-pub-3940256099942544~3347511713"</string>
     <string name="back">to main screen</string>
-    <string name="interstitial_not_loaded_msg">The interstitial wasn\'t loaded yet.</string>
+    <string name="interstitial_not_loaded_msg">We are loading the jokes</string>
 </resources>

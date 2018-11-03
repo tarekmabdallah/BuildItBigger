@@ -81,3 +81,12 @@ dependencies {
     implementation project(path: ':JokesJavaLib')
     implementation project(path: ':displayjokesandroidlib')
 }
+
+task connectedTestTask(dependsOn: [":backend:appengineStop",
+                                   ":backend:appengineRun",
+                                   ":app:connectedAndroidTest",
+                                   ':backend:appengineStop']) {
+    doLast {
+        println 'lastTask completed'
+    }
+}
